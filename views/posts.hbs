@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-md-12">
+        <h2>Posts</h2>
+        <hr />
+        <table class="table ">
+            <thead>
+                <tr>
+                    <th scope="col">Post&nbsp;ID</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Post&nbsp;Date</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Published</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each posts}}
+                <tr class="table-primary">
+                    <td>{{id}}</td>
+                    <td>{{title}}</td>
+                    <td>{{postDate}}</td>
+                    <td><a href="/posts?category={{category}}">{{category}}</a></td>
+                    <td>{{published}}</td>
+                </tr>
+                {{else}}
+                <tr>
+                    <td colspan="4">No Data Available</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+    {{#unless posts}}
+    <div class="col-md-12 text-center">
+        <strong>{{message}}</strong>
+    </div>
+    {{/unless}}
+</div>
