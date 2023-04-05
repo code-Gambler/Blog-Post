@@ -6,9 +6,9 @@
  *
  * Name: Steven David Pillay Student ID: 162218218 Date: 18-03-2023
  *
- * Cyclic Web App URL: https://clumsy-skirt-ray.cyclic.app/
+ * Cyclic Web App URL: https://ivory-spider-cape.cyclic.app
  *
- * GitHub Repository URL: https://github.com/code-Gambler/Assignment
+ * GitHub Repository URL: https://github.com/code-Gambler/Assignment-5
  *
  ********************************************************************************/
 const express = require("express");
