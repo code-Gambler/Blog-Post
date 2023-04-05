@@ -1,6 +1,8 @@
 <div class="row">
     <div class="col-md-12">
-        <h2>Categories</h2>
+        <h2>Categories
+            <a href="/categories/add" class="btn btn-success pull-right">Add Category</a>
+        </h2>
         <hr />
         <table class="table ">
             <thead>
@@ -14,6 +16,7 @@
                 <tr class="table-primary">
                     <td><a href="/posts?category={{id}}">{{id}}</a></td>
                     <td><a href="/posts?category={{id}}">{{category}}</a></td>
+                    <td><a href = "/categories/delete/{{id}}" class="btn btn-danger">remove</a></td>
                 </tr>
                 {{else}}
                 <tr>

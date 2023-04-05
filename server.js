@@ -1,16 +1,16 @@
 /*********************************************************************************
-* WEB322 – Assignment 04
-* I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part
-* of this assignment has been copied manually or electronically from any other source
-* (including 3rd party web sites) or distributed to other students.
-*
-* Name: Steven David Pillay Student ID: 162218218 Date: 18-03-2023
-*
-* Cyclic Web App URL: https://clumsy-skirt-ray.cyclic.app/
-*
-* GitHub Repository URL: https://github.com/code-Gambler/Assignment-4
-*
-********************************************************************************/
+ * WEB322 – Assignment 05
+ * I declare that this assignment is my own work in accordance with Seneca Academic Policy. No part
+ * of this assignment has been copied manually or electronically from any other source
+ * (including 3rd party web sites) or distributed to other students.
+ *
+ * Name: Steven David Pillay Student ID: 162218218 Date: 18-03-2023
+ *
+ * Cyclic Web App URL: https://clumsy-skirt-ray.cyclic.app/
+ *
+ * GitHub Repository URL: https://github.com/code-Gambler/Assignment
+ *
+ ********************************************************************************/
 const express = require("express");
 const multer = require("multer");
 const cloudinary = require("cloudinary").v2;
@@ -20,7 +20,7 @@ const path = require("path");
 const exphbs = require("express-handlebars");
 const stripJs = require("strip-js");
 
-const HTTP_PORT = process.env.PORT || 8080;
+const HTTP_PORT = process.env.PORT || 3000;
 const app = express();
 const upload = multer();
 
@@ -44,6 +44,7 @@ app.use(function (req, res, next) {
 app.engine(".hbs", exphbs.engine({ extname: ".hbs" }));
 app.set("view engine", ".hbs");
 app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
 app.engine(
   ".hbs",
   exphbs.engine({
@@ -71,6 +72,12 @@ app.engine(
       },
       safeHTML: function (context) {
         return stripJs(context);
+      },
+      formatDate: function (dateObj) {
+        let year = dateObj.getFullYear();
+        let month = (dateObj.getMonth() + 1).toString();
+        let day = dateObj.getDate().toString();
+        return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
       },
     },
   })
@@ -224,7 +231,14 @@ app.get("/categories", (req, res) => {
     });
 });
 app.get("/posts/add", (req, res) => {
-  res.render("addPost.hbs");
+  blogData
+    .getCategories()
+    .then((data) => {
+      res.render("addPost", { categories: data });
+    })
+    .catch((err) => {
+      res.render("addPost", { categories: [] });
+    });
 });
 
 app.post("/posts/add", upload.single("featureImage"), (req, res) => {
@@ -273,6 +287,44 @@ app.get("/post/:id", (req, res) => {
       res.status(404).json({ error: err });
     });
 });
+app.get("/categories/add", (req, res) => {
+  res.render("addCategory");
+});
+app.post("/categories/add", (req, res) => {
+  blogData.addCategory(req.body).then(() => {
+    res.redirect("/categories");
+  });
+});
+app.get("/categories/delete/:id", (req, res) => {
+  blogData
+    .deleteCategoryById(req.params.id)
+    .then(() => {
+      res.redirect("/categories");
+    })
+    .catch((err) => {
+      res.status(500).send("Unable to Remove Category / Category not found");
+    });
+});
+app.get("/posts/delete/:id", (req, res) => {
+  blogData
+    .deletePostById(req.params.id)
+    .then(() => {
+      res.redirect("/posts");
+    })
+    .catch((err) => {
+      res.status(500).send("Unable to Remove Post / Post not found");
+    });
+});
+app.get("/posts/delete/:id", (req, res) => {
+  blogData
+    .deletePostById(req.params.id)
+    .then(() => {
+      res.redirect("/posts");
+    })
+    .catch((err) => {
+      res.status(500).send("Unable to Remove Post / Post not found");
+    });
+});
 app.use((req, res) => {
   res.render("404.hbs");
 });
@@ -281,7 +333,7 @@ blogData
   .initialize()
   .then(() => {
     app.listen(HTTP_PORT, () => {
-      console.log("server listening on: " + HTTP_PORT);
+      console.log("server listening on: http://localhost:" + HTTP_PORT);
     });
   })
   .catch((err) => {
