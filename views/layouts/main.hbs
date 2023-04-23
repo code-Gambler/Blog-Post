@@ -32,11 +32,38 @@
             <button type="button" class="btn btn-primary btn-lg">{{#navLink "/blog"}}Blog{{/navLink}}</button>
             <button type="button" class="btn btn-primary btn-lg">{{#navLink "/about"}}About{{/navLink}}</button>
           </ul>
+          {{#if session.user}}
+            <form class="navbar-form navbar-right">
+              <div class="dropdown">
+                <button
+                  class="btn btn-primary dropdown-toggle"
+                  type="button"
+                  id="userMenu"
+                  data-toggle="dropdown"
+                >
+                  <span
+                    class="glyphicon glyphicon-user"
+                  ></span>&nbsp;&nbsp;{{session.user.userName}}&nbsp;&nbsp;<span
+                    class="caret"
+                  ></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="userMenu">
+                  <li><a href="/userHistory">User History</a></li>
+                  <li><a href="/logout">Log Out</a></li>
+                </ul>
+              </div>
+            </form>
+
           <ul class="nav navbar-nav navbar-right">
-            <button type="button" class="btn btn-primary btn-lg">{{#navLink "/posts"}}Posts{{/navLink}}</button>
-            <button type="button" class="btn btn-primary btn-lg">{{#navLink "/categories"}}Categories{{/navLink}}</button>
-            {{!-- <button type="button" class="btn btn-primary btn-lg">{{#navLink "/posts/add"}}Add Post{{/navLink}}</button>             --}}
+            {{#navLink "/posts"}}Posts{{/navLink}}
+            {{#navLink "/categories"}}Categories{{/navLink}}
           </ul>
+          {{else}}
+            <form class="navbar-form navbar-right">
+              <a href="/register" class="btn btn-success"><span class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;Register</a>
+              <a href="/login" class="btn btn-primary"><span class="glyphicon glyphicon-chevron-right"></span>&nbsp;&nbsp;Log In</a>
+            </form>
+          {{/if}}
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
