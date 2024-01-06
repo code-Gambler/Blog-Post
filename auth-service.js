@@ -20,7 +20,7 @@ let saltRounds = 10;
 module.exports.initialize = function () {
   return new Promise(function (resolve, reject) {
     let db = mongoose.createConnection(
-      "mongodb+srv://Steve:Steve@senecaweb.xcubkcr.mongodb.net/sample_training?retryWrites=true&w=majority"
+      "mongodb+srv://Steve:steve@senecaweb.xcubkcr.mongodb.net/sample_training?retryWrites=true&w=majority"
     );
     db.on("error", (err) => {
       reject(err); // reject the promise with the provided error
